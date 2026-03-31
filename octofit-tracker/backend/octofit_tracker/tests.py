@@ -1,5 +1,22 @@
 from django.test import TestCase
+from rest_framework.test import APIClient
 from .models import User, Team, Activity, Workout, Leaderboard
+
+
+class ApiRootTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_api_root(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertIn('users', data)
+        self.assertIn('teams', data)
+        self.assertIn('activities', data)
+        self.assertIn('leaderboard', data)
+        self.assertIn('workouts', data)
+
 
 class UserModelTest(TestCase):
     def test_create_user(self):
